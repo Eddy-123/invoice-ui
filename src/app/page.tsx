@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Home() {
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,27 +14,59 @@ export default function Home() {
       const data = new FormData();
       data.set("file", file);
 
-      const res = await fetch("http://localhost:8000/api/upload/", {
-        method: "POST",
-        body: data,
-      });
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/api/upload/",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       if (res.ok) {
         const response = await res.json();
-        alert(response.detail);
+        Toast.fire({
+          icon: "success",
+          title: response.detail,
+        });
       } else {
         const error = await res.json();
-        alert(error.detail);
+
+        Toast.fire({
+          icon: "error",
+          title: error.detail,
+        });
       }
+      handleClearFile();
     } catch (e: any) {
       console.log(e);
     }
   };
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFile(selectedFile);
+  };
+
+  const handleClearFile = () => {
+    setFile(null);
+  };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 9000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800">
-          Upload Your File
+          Sélectionner votre fichier
         </h2>
 
         <form onSubmit={onSubmit} className="space-y-4">
@@ -60,8 +93,7 @@ export default function Home() {
                   ></path>
                 </svg>
                 <p className="mt-1 text-sm text-gray-600">
-                  <span className="font-semibold">Click to upload</span> or drag
-                  and drop
+                  <span className="font-semibold">Cliquez</span>
                 </p>
                 <p className="text-xs text-gray-500">CSV, XLSX</p>
               </div>
@@ -69,7 +101,7 @@ export default function Home() {
                 id="file-upload"
                 type="file"
                 name="file"
-                onChange={(e) => setFile(e.target.files?.[0])}
+                onChange={handleFileChange}
                 className="hidden"
               />
             </label>
@@ -84,17 +116,12 @@ export default function Home() {
             </div>
           )}
 
-          {/* Progress Bar (optional) */}
-          <div className="relative w-full h-2 bg-gray-200 rounded">
-            <div className="absolute top-0 left-0 h-2 w-1/3 bg-blue-500 rounded animate-pulse"></div>
-          </div>
-
           {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            Upload File
+            Envoyer
           </button>
         </form>
       </div>
