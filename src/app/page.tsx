@@ -100,6 +100,7 @@ export default function Home() {
               <input
                 id="file-upload"
                 type="file"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 name="file"
                 onChange={handleFileChange}
                 className="hidden"
