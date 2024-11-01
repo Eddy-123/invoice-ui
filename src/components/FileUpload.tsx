@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { URLS } from "../../utils/urls";
 
 export default function FileUpload() {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File>();
   const [canTriggerRedirection, setCanTriggerRedirection] =
     useState<boolean>(false);
 
@@ -33,13 +33,17 @@ export default function FileUpload() {
         setCanTriggerRedirection(true);
       } else {
         const error = await res.json();
-
+        let message = error.detail;
+        message = message.replaceAll("[", "");
+        message = message.replaceAll("]", "");
+        message = message.replaceAll("\\n", "\n\n");
+        message = message.replaceAll("\\'", "'");
+        message = message.replaceAll("NaN", "???");
         Toast.fire({
           icon: "error",
-          title: error.detail,
+          title: message,
         });
       }
-      handleClearFile();
     } catch (e: unknown) {
       console.log(e);
       Toast.fire({
@@ -49,12 +53,8 @@ export default function FileUpload() {
     }
   };
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0] || null;
+    const selectedFile = e.target.files?.[0];
     setFile(selectedFile);
-  };
-
-  const handleClearFile = () => {
-    setFile(null);
   };
 
   const router = useRouter();

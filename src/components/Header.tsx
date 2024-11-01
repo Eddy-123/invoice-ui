@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { URLS } from "../../utils/urls";
 
 const Header: React.FC = () => {
@@ -17,7 +17,7 @@ const Header: React.FC = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-6">
           <Link href={URLS.HOME}>
-            <span className="hover:text-gray-300">Acceuil</span>
+            <span className="hover:text-gray-300">Téléverser</span>
           </Link>
           <Link href={URLS.INVOICES}>
             <span className="hover:text-gray-300">Factures</span>

@@ -1,11 +1,9 @@
 "use client";
 
 import DataTable from "@/components/DataTable";
-import Header from "@/components/Header";
 import Toast from "@/components/Toast";
 import { fetchInvoices } from "@/services/invoiceService";
 import { Invoice } from "../../../types/localTypes";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const InvoiceList = () => {
@@ -45,7 +43,11 @@ const InvoiceList = () => {
     <div>
       <h1 className="mt-2 md:mt-8 lg:mt-16 text-center text-4xl">Factures</h1>
       <div className="my-2 md:my-8 lg:my-16 mx-2 md:mx-8 lg:mx-16">
-        <DataTable headers={headers} data={invoices} />
+        <DataTable
+          headers={headers}
+          data={invoices}
+          emptyMessage="Aucune Facture"
+        />
       </div>
     </div>
   );

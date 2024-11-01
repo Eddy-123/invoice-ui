@@ -4,9 +4,14 @@ import React from "react";
 interface DataTableProps {
   data: Array<Invoice>;
   headers: Array<{ key: string; title: string }>;
+  emptyMessage: string;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data, headers }) => {
+const DataTable: React.FC<DataTableProps> = ({
+  data,
+  headers,
+  emptyMessage,
+}) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200">
@@ -33,12 +38,20 @@ const DataTable: React.FC<DataTableProps> = ({ data, headers }) => {
                   key={idx}
                   className="px-4 py-2 border-t text-sm text-gray-700 whitespace-nowrap"
                 >
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error string can't be used as index of Invoice*/}
                   {row[header.key]}
                 </td>
               ))}
             </tr>
           ))}
+
+          {data.length == 0 && (
+            <tr className="even:bg-gray-50 hover:bg-gray-100 transition-colors text-center">
+              <td colSpan={headers.length} className="px-4 py-2 border-t text-sm text-gray-700 whitespace-nowrap">
+                {emptyMessage}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
