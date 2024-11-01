@@ -19,5 +19,6 @@ export const fetchInvoiceDetail = async (id: number): Promise<Invoice> => {
   if (!response.ok) {
     throw new Error("Failed to fetch invoice details");
   }
-  return await response.json();
+  const data = await response.json();
+  return transformInvoice(data);
 };

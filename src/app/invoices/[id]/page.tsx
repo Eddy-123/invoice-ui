@@ -1,15 +1,27 @@
+"use client";
+
 import Toast from "@/components/Toast";
 import { fetchInvoiceDetail } from "@/services/invoiceService";
 
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Invoice } from "../../../types/localTypes";
+import { use, useEffect, useState } from "react";
+import { Invoice } from "../../../../types/localTypes";
+import DataTable from "@/components/DataTable";
 
-const InvoiceDetail = () => {
+interface InvoicePageProps {
+  params: Promise<{ id: string }>;
+}
+
+const InvoicePage = ({ params }: InvoicePageProps) => {
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-  const { id } = router.query;
+  const { id } = use(params);
+
+  const headers = [
+    { key: "description", title: "Description" },
+    { key: "quantity", title: "Quantité" },
+    { key: "total_price", title: "Prix Total" },
+    { key: "unit_price", title: "Prix Unitaire" },
+  ];
 
   useEffect(() => {
     const loadInvoice = async () => {
@@ -44,17 +56,17 @@ const InvoiceDetail = () => {
       <p>Email du Client: {invoice.clientEmail}</p>
       <p>Montant Total: {invoice.totalAmount}</p>
 
-      <h2>Articles</h2>
-      <ul>
-        {invoice.articles.map((article) => (
-          <li key={article.id}>
-            {article.description} - {article.quantity} x {article.price} ={" "}
-            {article.total}
-          </li>
-        ))}
-      </ul>
+      <h2 className="mt-2 md:mt-8 lg:mt-16 text-center text-4xl">Articles</h2>
+      <div className="my-2 md:my-8 lg:my-16 mx-2 md:mx-8 lg:mx-16">
+        <DataTable
+          headers={headers}
+          data={invoice.articles}
+          emptyMessage="Aucun Article"
+          displayActions={false}
+        />
+      </div>
     </div>
   );
 };
 
-export default InvoiceDetail;
+export default InvoicePage;

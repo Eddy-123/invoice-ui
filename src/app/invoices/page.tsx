@@ -47,6 +47,7 @@ const InvoiceList = () => {
           headers={headers}
           data={invoices}
           emptyMessage="Aucune Facture"
+          displayActions={true}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 export const URLS = {
   HOME: "/",
   INVOICES: "/invoices/",
-  INVOICE: (id: number) => `invoice/${id}`,
+  INVOICE: (id: number) => `invoices/${id}`,
 } as const;

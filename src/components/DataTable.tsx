@@ -1,16 +1,20 @@
-import { Invoice } from "../../types/localTypes";
+import Link from "next/link";
+import { Article, Invoice } from "../../types/localTypes";
 import React from "react";
+import { URLS } from "../../utils/urls";
 
 interface DataTableProps {
-  data: Array<Invoice>;
+  data: Array<Invoice | Article>;
   headers: Array<{ key: string; title: string }>;
   emptyMessage: string;
+  displayActions: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
   data,
   headers,
   emptyMessage,
+  displayActions,
 }) => {
   return (
     <div className="overflow-x-auto">
@@ -25,6 +29,11 @@ const DataTable: React.FC<DataTableProps> = ({
                 {header.title}
               </th>
             ))}
+            {displayActions && (
+              <th className="px-4 py-2 bg-gray-100 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -42,12 +51,21 @@ const DataTable: React.FC<DataTableProps> = ({
                   {row[header.key]}
                 </td>
               ))}
+
+              {displayActions && (
+                <td className="px-4 py-2 border-t text-sm text-gray-700 whitespace-nowrap">
+                  <Link href={URLS.INVOICE(row.id)}>Détail</Link>
+                </td>
+              )}
             </tr>
           ))}
 
           {data.length == 0 && (
             <tr className="even:bg-gray-50 hover:bg-gray-100 transition-colors text-center">
-              <td colSpan={headers.length} className="px-4 py-2 border-t text-sm text-gray-700 whitespace-nowrap">
+              <td
+                colSpan={headers.length}
+                className="px-4 py-2 border-t text-sm text-gray-700 whitespace-nowrap"
+              >
                 {emptyMessage}
               </td>
             </tr>
