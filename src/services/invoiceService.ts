@@ -2,7 +2,7 @@ import { ApiInvoice } from "../../types/apiTypes";
 import { Invoice } from "../../types/localTypes";
 import { transformInvoice } from "../../utils/transform";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchInvoices = async (): Promise<Invoice[]> => {
   const response = await fetch(`${BASE_URL}/api/invoices/`);
