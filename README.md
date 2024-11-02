@@ -36,3 +36,8 @@ npm run dev
 - The frontend should be running at http://localhost:3000
 
 - Get an excel or csv file from the backend to try out the whole process
+
+# Production
+
+- The frontend is deployed on Vercel
+- It can be accessed at this url: https://invoice-ui-iota.vercel.app/
