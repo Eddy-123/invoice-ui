@@ -6,6 +6,10 @@ import { URLS } from "../../utils/urls";
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigation = [
+    { title: "Téléverser", link: URLS.HOME },
+    { title: "Factures", link: URLS.INVOICES },
+  ];
 
   return (
     <header className="bg-blue-600 text-white">
@@ -16,12 +20,11 @@ const Header: React.FC = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-6">
-          <Link href={URLS.HOME}>
-            <span className="hover:text-gray-300">Téléverser</span>
-          </Link>
-          <Link href={URLS.INVOICES}>
-            <span className="hover:text-gray-300">Factures</span>
-          </Link>
+          {navigation.map((navItem) => (
+            <Link key={`${navItem.title}:${navItem.link}`} href={navItem.link}>
+              <span className="hover:text-gray-300">{navItem.title}</span>
+            </Link>
+          ))}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -48,26 +51,13 @@ const Header: React.FC = () => {
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
         <nav className="md:hidden bg-blue-700 p-4">
-          <Link href="/">
-            <span className="block py-2 px-4 hover:bg-blue-800 rounded">
-              Home
-            </span>
-          </Link>
-          <Link href="/about">
-            <span className="block py-2 px-4 hover:bg-blue-800 rounded">
-              About
-            </span>
-          </Link>
-          <Link href="/services">
-            <span className="block py-2 px-4 hover:bg-blue-800 rounded">
-              Services
-            </span>
-          </Link>
-          <Link href="/contact">
-            <span className="block py-2 px-4 hover:bg-blue-800 rounded">
-              Contact
-            </span>
-          </Link>
+          {navigation.map((navItem) => (
+            <Link key={`${navItem.title}:${navItem.link}`} href={navItem.link}>
+              <span className="block py-2 px-4 hover:bg-blue-800 rounded">
+                {navItem.title}
+              </span>
+            </Link>
+          ))}
         </nav>
       )}
     </header>
