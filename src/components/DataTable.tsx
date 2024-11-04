@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Article, Invoice } from "../../types/localTypes";
 import React from "react";
 import { URLS } from "../../utils/urls";
+import InvoiceDownloadButton from "./InvoiceDownloadButton";
 
 interface DataTableProps {
   data: Array<Invoice | Article>;
@@ -54,7 +55,13 @@ const DataTable: React.FC<DataTableProps> = ({
 
               {displayActions && (
                 <td className="px-4 py-2 border-t text-sm text-gray-700 whitespace-nowrap">
-                  <Link href={URLS.INVOICE(row.id)}>Détail</Link>
+                  <Link href={URLS.INVOICE(row.id)} className="m-2">
+                    Détail
+                  </Link>
+                  |
+                  <span className="m-2">
+                    <InvoiceDownloadButton invoiceId={row.id} />
+                  </span>
                 </td>
               )}
             </tr>
